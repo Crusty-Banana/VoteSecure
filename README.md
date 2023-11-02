@@ -6,3 +6,9 @@ Nguyen Duong Tung SIS ID: V202000270 <br>
 Do Doan Khac SIS ID: V202100513 <br>
 Balashova Ekaterina SIS ID: V202100391 <br>
 
+II. Required installation
+
+```
+npm i express nodemon mongoose
+```
+
