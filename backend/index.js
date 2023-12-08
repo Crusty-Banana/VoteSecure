@@ -12,7 +12,7 @@ const db = require('./database/database');
 const userService = require('./service/user');
 
 // Authentication
-const verifyToken = require('./middleware/auth');
+const auth = require('./middleware/auth');
 
 // Environment Constant
 const { PORT } = process.env;
@@ -20,7 +20,10 @@ const { PORT } = process.env;
 
 const app = express();
 
-app.use(cors());
+app.use(express.json());
+app.use(cors({
+    origin: '*'
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -28,14 +31,17 @@ db.connect();
 
 app.listen(PORT, () => {
     console.log(`App is listening to port: ${PORT}`);
-})
+});
 
 app.post('/register', userService.register);
 
 app.post("/login", userService.login);
 
+app.post("/auth-test", auth, (req, res) => {
+    return res.status(234).send('authenticated!')
+});
 app.get('/', (request, response) => {
     console.log(request)
     return response.status(234).send('Backend main page')
-})
+});
 
