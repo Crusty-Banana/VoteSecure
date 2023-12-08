@@ -2,10 +2,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 require('dotenv').config();
 
 // Database
-const db = require('./database/database.js');
+const db = require('./database/database');
+
+// Service
+const userService = require('./service/user');
+
+// Authentication
+const verifyToken = require('./middleware/auth');
 
 // Environment Constant
 const { PORT } = process.env;
@@ -22,6 +29,10 @@ db.connect();
 app.listen(PORT, () => {
     console.log(`App is listening to port: ${PORT}`);
 })
+
+app.post('/register', userService.register);
+
+app.post("/login", userService.login);
 
 app.get('/', (request, response) => {
     console.log(request)
