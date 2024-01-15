@@ -6,26 +6,3 @@ Nguyen Duong Tung SIS ID: V202000270 <br>
 Do Doan Khac SIS ID: V202100513 <br>
 Balashova Ekaterina SIS ID: V202100391 <br>
 
-II. Required installation
-
-Backend
-
-```
-npm i express nodemon mongoose
-```
-
-Frontend
-
-```
-npm create vite@latest
-cd frontend
-npm i
-
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
-#do some stuff
-
-npm i react-router-dom
-```
-
