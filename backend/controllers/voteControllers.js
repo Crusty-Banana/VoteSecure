@@ -16,6 +16,8 @@ exports.createVotingSession = async (req, res) => {
   if (!description || !candidates || !voters) {
     res.status(400).send("Missing inputs");
   }
+
+  console.log(voters.length, candidates);
   await contract.methods
     .createSession(voters.length, candidates)
     .send({ from: SENDER_ADDRESS })
@@ -46,6 +48,10 @@ exports.createVotingSession = async (req, res) => {
           }
         }
       });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send(err);
     });
 };
 
@@ -103,6 +109,15 @@ exports.getOngoingSession = async (req, res) => {
 
 exports.getResult = async (req, res) => {
   const sessionId = parseInt(req.params.sessionId, 10);
+  await contract.methods.isSessionOngoing(sessionId).call((error, result) => {
+    if (error) {
+      res.status(400).send(error);
+    } else {
+      if (result === true) {
+        res.status(500).send("The session has not finished");
+      }
+    }
+  });
   await contract.methods.getVoteResults(sessionId).call((error, result) => {
     if (error) {
       res.status(400).send(error);
