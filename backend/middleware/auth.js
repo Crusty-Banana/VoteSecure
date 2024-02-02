@@ -1,16 +1,22 @@
 const jwt = require("jsonwebtoken");
+const TOKEN_KEY = 'eda059d2';
 
-function verifyToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+const verifyToken = (req, res, next) => {
+  const token =
+    req.body.token || req.query.token || req.headers["x-access-token"];
 
-    if (token == null) return res.sendStatus(401)
+  console.log(token)
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user
-        next()
-    });
+  if (!token) {
+    return res.status(403).send("A token is required for authentication");
+  }
+  try {
+    const decoded = jwt.verify(token, TOKEN_KEY);
+    req.user = decoded;
+  } catch (err) {
+    return res.status(401).send("Invalid Token");
+  }
+  return next();
 };
 
-module.exports = verifyToken;   
+module.exports = verifyToken;
