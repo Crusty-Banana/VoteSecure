@@ -128,9 +128,6 @@ app.post('/createVotingSession', auth, async (req, res) => {
         return getIdRes
       })
 
-    // Assuming `createSession` emits an event with the session ID, extract it from the transaction receipt
-    // This part needs to be adjusted based on your contract's actual event and return values
-
     // Create session in MongoDB
     const session = await VotingSession.create({
       description: description,
